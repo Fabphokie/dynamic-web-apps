@@ -34,8 +34,7 @@ const createButtonElement = ({ author, id, image, title }) => {
 };
 
 
-  //Initializes the starting list of book items.
- 
+//Initializes the starting list of book items.
 const initializeList = () => {
   const starting = document.createDocumentFragment();
   matches.slice(0, BOOKS_PER_PAGE).forEach((book) => {
@@ -93,12 +92,13 @@ const updateListButton = () => {
 };
 
 // Event handler for the search cancel button click.
- const handleSearchCancel = () => {
+const handleSearchCancel = () => {
   document.querySelector('[data-search-overlay]').open = false;
 };
 
- //Event handler for the settings cancel button click.
- const handleSettingsCancel = () => {
+
+//Event handler for the settings cancel button click.
+const handleSettingsCancel = () => {
   document.querySelector('[data-settings-overlay]').open = false;
 };
 
@@ -109,13 +109,14 @@ const handleHeaderSearchClick = () => {
   document.querySelector('[data-search-title]').focus();
 };
 
- //Event handler for the header settings button click.
+
+//Event handler for the header settings button click.
 const handleHeaderSettingsClick = () => {
   document.querySelector('[data-settings-overlay]').open = true;
 };
 
 //Event handler for the close list button click.
- const handleCloseListClick = () => {
+const handleCloseListClick = () => {
   document.querySelector('[data-list-active]').open = false;
 };
 
@@ -191,8 +192,9 @@ const handleSearchFormSubmit = (event) => {
   document.querySelector('[data-search-overlay]').open = false;
 };
 
- //Event handler for the "Show more" button click.
- const handleListButtonClick = () => {
+
+//Event handler for the "Show more" button click.
+const handleListButtonClick = () => {
   const fragment = document.createDocumentFragment();
 
   matches.slice(page * BOOKS_PER_PAGE, (page + 1) * BOOKS_PER_PAGE).forEach((book) => {
