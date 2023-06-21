@@ -8,49 +8,47 @@ import { books, authors, genres, BOOKS_PER_PAGE } from './data.js';
 let page = 1; // Current page number
 let matches = books; // List of books that match the search filters
 
-/**
- * Creates a button element for a book.
- * @param {Object} book - The book object.
- * @param {string} book.author - The author of the book.
- * @param {string} book.id - The ID of the book.
- * @param {string} book.image - The URL of the book's image.
- * @param {string} book.title - The title of the book.
- * @param {string} book.description - The description of the book.
- * @returns {HTMLDivElement} The created button element.
- */
-const createButtonElement = ({ author, id, image, title, description }) => {
-    const element = document.createElement('div');
-    element.classList.add('book-preview');
+function BookElementFactory() {
+    function createButtonElement({ author, id, image, title }) {
+        const element = document.createElement('button');
+        element.classList = 'preview';
+        element.setAttribute('data-preview', id);
+        /*
+        *The book's image is represented by an img element (imgElement). It is created using document.createElement('img'),
+        *and the preview__image class is assigned to it.
+        * Then the img element is appended as a child to the book element.
+        */
+        const imgElement = document.createElement('img');
+        imgElement.classList = 'preview__image';
+        imgElement.src = image;
+        element.appendChild(imgElement);
+        const infoElement = document.createElement('div');
+        infoElement.classList = 'preview__info';
+        const titleElement = document.createElement('h3');
+        titleElement.classList = 'preview__title';
+        titleElement.innerText = title;
+        infoElement.appendChild(titleElement);
+        const authorElement = document.createElement('div');
+        authorElement.classList = 'preview__author';
+        authorElement.innerText = authors[author];
+        infoElement.appendChild(authorElement);
+        element.appendChild(infoElement);
+        return element;
+    }
+    return createButtonElement;
+}
 
-    const imageElement = document.createElement('img');
-    imageElement.classList.add('book-preview__image');
-    imageElement.src = image;
-    element.appendChild(imageElement);
-
-    const infoElement = document.createElement('div');
-    infoElement.classList.add('book-preview__info');
-
-    const titleElement = document.createElement('h3');
-    titleElement.classList.add('book-preview__title');
-    titleElement.innerText = title;
-    infoElement.appendChild(titleElement);
-
-    const authorElement = document.createElement('div');
-    authorElement.classList.add('book-preview__author');
-    authorElement.innerText = authors[author];
-    infoElement.appendChild(authorElement);
-
-    const descriptionElement = document.createElement('div');
-    descriptionElement.classList.add('book-preview__description');
-    descriptionElement.innerText = description;
-    infoElement.appendChild(descriptionElement);
-
-    element.appendChild(infoElement);
-
-    return element;
+// Usage
+const createButtonElement = BookElementFactory();
+const book = {
+    author: 'authorId',
+    id: 'bookId',
+    image: 'book.jpg',
+    title: 'Book Title',
 };
-
-
+//'BookElement' factory function is used to create a book element by passing the 'book' object as an argument.
+const ButtonElement = createButtonElement(book);
+console.log(ButtonElement);
 
 
 //Initializes the starting list of book items.

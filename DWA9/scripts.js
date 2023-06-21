@@ -8,65 +8,67 @@ import { books, authors, genres, BOOKS_PER_PAGE } from './data.js';
 let page = 1; // Current page number
 let matches = books; // List of books that match the search filters
 
-class BookPreview extends HTMLElement {
-    constructor() {
-      super();
-      this.attachShadow({ mode: 'open' });
+class BookPreviewButton extends HTMLElement {
+    constructor(book) {
+        super(book);
     }
-  
-    connectedCallback() {
-      this.render();
-    }
-  
-    render() {
-      const author = this.getAttribute('author');
-      const id = this.getAttribute('id');
-      const image = this.getAttribute('image');
-      const title = this.getAttribute('title');
-      const description = this.getAttribute('description');
-  
-      this.shadowRoot.innerHTML = `
-        <style>
-          /* Add your custom styles for the book preview here */
-          .book-preview {
-            /* Your styles for the book preview container */
-          }
-  
-          .book-preview__image {
-            /* Your styles for the book image */
-          }
-  
-          .book-preview__info {
-            /* Your styles for the book info container */
-          }
-  
-          .book-preview__title {
-            /* Your styles for the book title */
-          }
-  
-          .book-preview__author {
-            /* Your styles for the book author */
-          }
-  
-          .book-preview__description {
-            /* Your styles for the book description */
-          }
-        </style>
-        <div class="book-preview">
-          <img class="book-preview__image" src="${image}" />
-          <div class="book-preview__info">
-            <h3 class="book-preview__title">${title}</h3>
-            <div class="book-preview__author">${author}</div>
-            <div class="book-preview__description">${description}</div>
-          </div>
-        </div>
-      `;
-    }
-  }
-  
-  customElements.define('book-preview', BookPreview);
-  
 
+    connectedCallback() {
+        const author = this.getAttribute('author');
+        const id = this.getAttribute('id');
+        const image = this.getAttribute('image');
+        const title = this.getAttribute('title');
+
+        const buttonElement = this.createButtonElement({ author, id, image, title });
+        this.appendChild(buttonElement);
+    }
+
+    createButtonElement({ author, id, image, title }) {
+        const element = document.createElement('button');
+        element.classList = 'preview';
+        element.setAttribute('data-preview', id);
+
+        const imgElement = document.createElement('img');
+        imgElement.classList = 'preview__image';
+        imgElement.src = image;
+        element.appendChild(imgElement);
+
+        const infoElement = document.createElement('div');
+        infoElement.classList = 'preview__info';
+
+        const titleElement = document.createElement('h3');
+        titleElement.classList = 'preview__title';
+        titleElement.innerText = title;
+        infoElement.appendChild(titleElement);
+
+        const authorElement = document.createElement('div');
+        authorElement.classList = 'preview__author';
+        authorElement.innerText = authors[author];
+        infoElement.appendChild(authorElement);
+
+        element.appendChild(infoElement);
+
+        return element;
+    }
+}
+
+customElements.define('book-preview-button', BookPreviewButton);
+
+// Usage
+const book = {
+    author: 'authorId',
+    id: 'bookId',
+    image: 'book.jpg',
+    title: 'Book Title',
+};
+
+const createbuttonElement = document.createElement('book-preview-button');
+createbuttonElement.setAttribute('author', book.author);
+createbuttonElement.setAttribute('id', book.id);
+createbuttonElement.setAttribute('image', book.image);
+createbuttonElement.setAttribute('title', book.title);
+
+console.log(createbuttonElement);
 
 
 
@@ -74,8 +76,8 @@ class BookPreview extends HTMLElement {
 const initializeList = () => {
     const starting = document.createDocumentFragment();
     matches.slice(0, BOOKS_PER_PAGE).forEach((book) => {
-        const element = createButtonElement(book);
-        starting.appendChild(element);
+        const createButtonElement = createbuttonElement(book);
+        starting.appendChild(createButtonElement);
     });
 
     document.querySelector('[data-list-items]').appendChild(starting);
