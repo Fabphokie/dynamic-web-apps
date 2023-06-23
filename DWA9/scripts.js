@@ -9,8 +9,11 @@ let page = 1; // Current page number
 let matches = books; // List of books that match the search filters
 
 class BookPreviewButton extends HTMLElement {
-    constructor(book) {
-        super(book);
+    constructor() {
+        super();
+        this.book = book;
+        this.element = this.createElement()
+
     }
 
     connectedCallback() {
@@ -62,13 +65,13 @@ const book = {
     title: 'Book Title',
 };
 
-const createbuttonElement = document.createElement('book-preview-button');
-createbuttonElement.setAttribute('author', book.author);
-createbuttonElement.setAttribute('id', book.id);
-createbuttonElement.setAttribute('image', book.image);
-createbuttonElement.setAttribute('title', book.title);
+// const createbuttonElement = document.createElement('book-preview-button');
+// createbuttonElement.setAttribute('author', book.author);
+// createbuttonElement.setAttribute('id', book.id);
+// createbuttonElement.setAttribute('image', book.image);
+// createbuttonElement.setAttribute('title', book.title);
 
-console.log(createbuttonElement);
+// console.log(createbuttonElement);
 
 
 

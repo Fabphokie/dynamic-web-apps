@@ -98,7 +98,7 @@ body {
 .counter__button:active {
     background: var(--color-medium-grey);
     transform: translateY(2%);
-    text-align: ;
+    text-align:center;
 
 }
 
