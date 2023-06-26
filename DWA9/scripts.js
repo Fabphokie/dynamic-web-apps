@@ -11,50 +11,28 @@ let matches = books; // List of books that match the search filters
 class BookPreviewButton extends HTMLElement {
     constructor() {
         super();
-        this.book = book;
-        this.element = this.createElement()
-
+        this.attachShadow({ mode: 'open' });
+        this.listenItems = document.querySelector('[data-list-items]');
+        this.fragment = document.createDocumentFragment();
+        this.extracted = matches.slice(range[0], range[1]);
     }
 
     connectedCallback() {
-        const author = this.getAttribute('author');
-        const id = this.getAttribute('id');
-        const image = this.getAttribute('image');
-        const title = this.getAttribute('title');
+        for(const {author, image, tittle, id} of this.extracted){
+            const preview = createBookPreview({
+                author,
+                id,
+                image,
+                tittle,
+            })
 
-        const buttonElement = this.createButtonElement({ author, id, image, title });
-        this.appendChild(buttonElement);
-    }
+            this.fragment.appendChild(preview);
+        }
+       this.listenItems.appendChild(this.fragment);
+    }   
+        
 
-    createButtonElement({ author, id, image, title }) {
-        const element = document.createElement('button');
-        element.classList = 'preview';
-        element.setAttribute('data-preview', id);
-
-        const imgElement = document.createElement('img');
-        imgElement.classList = 'preview__image';
-        imgElement.src = image;
-        element.appendChild(imgElement);
-
-        const infoElement = document.createElement('div');
-        infoElement.classList = 'preview__info';
-
-        const titleElement = document.createElement('h3');
-        titleElement.classList = 'preview__title';
-        titleElement.innerText = title;
-        infoElement.appendChild(titleElement);
-
-        const authorElement = document.createElement('div');
-        authorElement.classList = 'preview__author';
-        authorElement.innerText = authors[author];
-        infoElement.appendChild(authorElement);
-
-        element.appendChild(infoElement);
-
-        return element;
-    }
 }
-
 customElements.define('book-preview-button', BookPreviewButton);
 
 // Usage
@@ -65,7 +43,7 @@ const book = {
     title: 'Book Title',
 };
 
-// const createbuttonElement = document.createElement('book-preview-button');
+ const createbuttonElement = document.createElement('book-preview-button');
 // createbuttonElement.setAttribute('author', book.author);
 // createbuttonElement.setAttribute('id', book.id);
 // createbuttonElement.setAttribute('image', book.image);
@@ -79,7 +57,7 @@ const book = {
 const initializeList = () => {
     const starting = document.createDocumentFragment();
     matches.slice(0, BOOKS_PER_PAGE).forEach((book) => {
-        const createButtonElement = createbuttonElement(book);
+        const createButtonElement = createButtonElement(book);
         starting.appendChild(createButtonElement);
     });
 
